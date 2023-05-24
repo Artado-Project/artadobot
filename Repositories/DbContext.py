@@ -1,7 +1,7 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase as Base
-from typing import List, Type, TypeVar, Generic
+from typing import List, TypeVar, Generic
 
 T = TypeVar('T', bound=Base)
 

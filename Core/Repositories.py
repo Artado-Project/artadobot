@@ -7,7 +7,7 @@ T = TypeVar('T', bound=Base)
 
 class IStorageBase(Generic[T], ABC):
     @abstractmethod
-    def FindAll(self, trackChanges: bool) -> Type[List[T]]:
+    def FindAll(self, trackChanges: bool) -> List:
         pass
 
     @abstractmethod
@@ -15,7 +15,7 @@ class IStorageBase(Generic[T], ABC):
         pass
 
     @abstractmethod
-    def FindByCondition(self, expression: callable) -> Type[List[T]]:
+    def FindByCondition(self, expression: callable) -> List:
         pass
 
     @abstractmethod
