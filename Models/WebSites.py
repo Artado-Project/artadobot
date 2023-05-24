@@ -4,7 +4,7 @@ from Helpers import Contants
 
 
 class WebSites(Model):
-    __tablename__ = Contants.TableNames.WEBSITES
+    __tablename__ = Contants.TableNames.WebSites
 
     id = Column("id", Integer, primary_key=True, nullable=False, unique=True)
     using_js = Column("using_js", Boolean, nullable=False)

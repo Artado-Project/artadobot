@@ -2,10 +2,10 @@ from enum import Enum
 
 
 class TableNames(Enum):
-    CRAWLLOG = "CrawlLog"
-    CRAWLRULES = "CrawRules"
-    PAGECONTENTS = "PageContents"
-    PAGEIMAGES = "PageImages"
-    PAGELINKS = "PageLinks"
-    PAGES = "Pages"
-    WEBSITES = "WebSites"
+    CrawLog = "CrawlLog"
+    CrawRules = "CrawRules"
+    PageContents = "PageContents"
+    PageImages = "PageImages"
+    PageLinks = "PageLinks"
+    Pages = "Pages"
+    WebSites = "WebSites"

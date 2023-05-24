@@ -4,9 +4,9 @@ from Helpers import Contants
 
 
 class PageLinks(Model):
-    __tablename__ = Contants.TableNames.PAGELINKS
+    __tablename__ = Contants.TableNames.PageLinks
     id = Column("id", Integer, primary_key=True, nullable=False)
-    page_id = Column("page_id", Integer, ForeignKey(f"{Contants.TableNames.PAGES}.id"), nullable=False)
+    page_id = Column("page_id", Integer, ForeignKey(f"{Contants.TableNames.Pages}.id"), nullable=False)
     link_url = Column("link_url", String, nullable=False)
     link_type = Column("link_type", String, nullable=False)
     last_modified_at = Column("last_modified_at", Date, nullable=False)

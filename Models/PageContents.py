@@ -4,9 +4,9 @@ from Helpers import Contants
 
 
 class PageContents(Model):
-    __tablename__ = Contants.TableNames.PAGECONTENTS
+    __tablename__ = Contants.TableNames.PageContents
     id = Column("id", Integer, primary_key=True, nullable=False)
-    page_id = Column("page_id", Integer, ForeignKey(f"{Contants.TableNames.PAGES}.id"),nullable=False)
+    page_id = Column("page_id", Integer, ForeignKey(f"{Contants.TableNames.Pages}.id"), nullable=False)
     title = Column("title", String, nullable=False)
     keywords = Column("keywords", String, nullable=False)
     content_type = Column("content_type", String, nullable=False)

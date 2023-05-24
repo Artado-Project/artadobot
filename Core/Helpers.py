@@ -2,8 +2,7 @@ from zope.interface import interface, implementer
 
 
 class IHelper(interface):
-    def Help(self):
-        pass
+    pass
 
 
 @implementer(IHelper)
@@ -13,4 +12,5 @@ class ILoggerHelper(interface):
 
 @implementer(IHelper)
 class IConfigurator(interface):
-    pass
+    def MigrateConfiguration(self):
+        pass

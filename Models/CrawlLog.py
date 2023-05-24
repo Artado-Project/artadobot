@@ -4,10 +4,10 @@ from Helpers import Contants
 
 
 class CrawlLog(Model):
-    __tablename__ = Contants.TableNames.CRAWLLOG
+    __tablename__ = Contants.TableNames.CrawLog
     id = Column("id", Integer, primary_key=True, nullable=False, unique=True)
-    page_id = Column("page_id", Integer, ForeignKey(f"{Contants.TableNames.PAGES}.id"), nullable=False)
-    rule_id = Column("rule_id", Integer, ForeignKey(f"{Contants.TableNames.CRAWLRULES}.id"), nullable=False)
+    page_id = Column("page_id", Integer, ForeignKey(f"{Contants.TableNames.Pages}.id"), nullable=False)
+    rule_id = Column("rule_id", Integer, ForeignKey(f"{Contants.TableNames.CrawRules}.id"), nullable=False)
     status_code = Column("status_code", Integer, nullable=False)
     response_time = Column("response_time", Integer, nullable=False)
     error_message = Column("error_message", String, nullable=True)
