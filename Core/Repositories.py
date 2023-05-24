@@ -1,9 +1,9 @@
 from typing import List, Type, Generic, TypeVar
+from sqlalchemy.orm import DeclarativeBase as Base
 from zope.interface import interface
 
-from Core.Model import Model
 
-T = TypeVar('T', bound=Model)
+T = TypeVar('T', bound=Base)
 
 
 class IStorageBase(Generic[T], interface):
