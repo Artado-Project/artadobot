@@ -1,26 +1,31 @@
 from typing import List, Type, Generic, TypeVar
-from zope.interface import interface
+from sqlalchemy.orm import DeclarativeBase as Base
+from abc import ABC, abstractmethod
 
-from Core.Model import Model
-
-T = TypeVar('T', bound=Model)
+T = TypeVar('T', bound=Base)
 
 
-class IStorageBase(Generic[T], interface):
+class IStorageBase(Generic[T], ABC):
+    @abstractmethod
     def FindAll(self, trackChanges: bool) -> Type[List[T]]:
         pass
 
+    @abstractmethod
     def FindById(self, id: int) -> Type[T]:
         pass
 
+    @abstractmethod
     def FindByCondition(self, expression: callable) -> Type[List[T]]:
         pass
 
+    @abstractmethod
     def CreateModel(self, model: Type[T]) -> Type[T]:
         pass
 
+    @abstractmethod
     def UpdateModel(self, model: Type[T]) -> Type[T]:
         pass
 
+    @abstractmethod
     def DeleteModel(self, id: int) -> None:
         pass

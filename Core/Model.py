@@ -1,8 +1,5 @@
-from abc import ABC, abstractproperty
+from sqlalchemy.orm import DeclarativeBase
 
 
-class Model(ABC):
-    _id: int
-
-    def __init__(self):
-        pass
+class Model(DeclarativeBase):
+    id: int
