@@ -12,7 +12,6 @@
 #         result_data_set["Disallowed"].append(line.split(': ')[1].split(' ')[0])    # to neglect the comments or other junk info
 
 
-
 # def get_keywords(url):
 #     r = requests.get(url)
 #     soup = BeautifulSoup(r.content, 'html.parser')
@@ -71,3 +70,7 @@ if is_mobile_compatible:
 else:
     print("The page is not mobile compatible")
     """
+
+from test.testDB import RunTest
+
+RunTest()
