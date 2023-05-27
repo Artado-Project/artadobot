@@ -1,7 +1,6 @@
-from sqlalchemy.orm import sessionmaker, DeclarativeBase
-from sqlalchemy import create_engine
-from typing import List, TypeVar, Generic, Type
-from models.webSites import WebSites
+from typing import List
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, inspect
 from core.model import Model
 
 
@@ -11,7 +10,7 @@ class DbContext:
         self.__model_class = model_class
         self.__engine = create_engine(db_url, echo=True)
         self.__Session: sessionmaker = sessionmaker(bind=self.__engine)
-
+        self.__CreateAllTables()
     def Create(self, obj):
         try:
             session = self.__Session()
@@ -55,9 +54,9 @@ class DbContext:
     def GetAll(self) -> List:
         try:
             session = self.__Session()
-            objects = session.query(self.__model_class).all()
+            objects: List = session.query(self.__model_class).all()
             session.close()
-            return [entity for entity in objects]
+            return objects
         except Exception as e:
             print(e)
 
@@ -69,7 +68,7 @@ class DbContext:
             return objects
         except Exception as e:
             print(e)
-    def __createTable(self):
-        session = self.Session()
-        WebSites.__table__.create(bind=self.engine)
-        session.close()
+
+    def __CreateAllTables(self):
+        if inspect(self.__engine).has_table(self.__model_class.__tablename__) is False:
+            self.__model_class.__table__.create(self.__engine)

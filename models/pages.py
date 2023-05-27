@@ -1,14 +1,14 @@
-from sqlalchemy import Column, Integer, String, Boolean, Date, ForeignKey
+from sqlalchemy import Column, Integer, VARCHAR, Boolean, Date, ForeignKey
 
 from core.model import Model
 from helpers.constants import TableNames
 
 
 class Pages(Model):
-    __tablename__ = TableNames.Pages
+    __tablename__ = TableNames.Pages.value
     id = Column("id", Integer, primary_key=True, nullable=False, unique=True)
-    domain_id = Column("domain_id", Integer, ForeignKey(f"{TableNames.WebSites}.id"), nullable=False)
-    url = Column("url", String, nullable=False)
+    domain_id = Column("domain_id", Integer, ForeignKey(f"{TableNames.WebSites.value}.id"), nullable=False)
+    url = Column("url", VARCHAR(255), nullable=False)
     is_allowed = Column("is_allowed", Boolean, nullable=False)
     crawled_at = Column("crawled_at", Date, nullable=True)
 

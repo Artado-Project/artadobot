@@ -1,16 +1,16 @@
-from sqlalchemy import Column, Integer, String, Boolean, Date, ForeignKey
+from sqlalchemy import Column, Integer, VARCHAR, Boolean, Date, ForeignKey
 
 from core.model import Model
 from helpers.constants import TableNames
 
 
 class PageContents(Model):
-    __tablename__ = TableNames.PageContents
+    __tablename__ = TableNames.PageContents.value
     id = Column("id", Integer, primary_key=True, nullable=False)
-    page_id = Column("page_id", Integer, ForeignKey(f"{TableNames.Pages}.id"), nullable=False)
-    title = Column("title", String, nullable=False)
-    keywords = Column("keywords", String, nullable=False)
-    content_type = Column("content_type", String, nullable=False)
+    page_id = Column("page_id", Integer, ForeignKey(f"{TableNames.Pages.value}.id"), nullable=False)
+    title = Column("title", VARCHAR(50), nullable=False)
+    keywords = Column("keywords", VARCHAR(50), nullable=False)
+    content_type = Column("content_type", VARCHAR(50), nullable=False)
     last_modified_at = Column("last_modified_at", Date, nullable=False)
 
     def __init__(self, id, page_id, title, keywords, content_type, last_modified_at):

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, Date, ForeignKey
+from sqlalchemy import Column, Integer, VARCHAR, Boolean, Date, ForeignKey
 
 from core.model import Model
 from helpers.constants import TableNames
@@ -6,10 +6,10 @@ from helpers.constants import TableNames
 
 
 class PageImages(Model):
-    __tablename__ = TableNames.PageImages
+    __tablename__ = TableNames.PageImages.value
     id = Column("id", Integer, primary_key=True, nullable=False)
-    page_id = Column("page_id", Integer, ForeignKey(f"{TableNames.Pages}.id"), nullable=False)
-    alt_text = Column("alt_text", String, nullable=True)
+    page_id = Column("page_id", Integer, ForeignKey(f"{TableNames.Pages.value}.id"), nullable=False)
+    alt_text = Column("alt_text", VARCHAR(255), nullable=True)
     height = Column("height", Integer, nullable=True)
     width = Column("width", Integer, nullable=True)
 
