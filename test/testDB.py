@@ -24,6 +24,25 @@ def GetAll():
     all_sites = context.GetAll()
     for i in all_sites:
         print(i.domain_url)
+    
+def GetById():
+    env = EnvConfigurator()
+    url = env.MigrateConfiguration("MYSQL_DB")
+    context: DbContext = DbContextBuilder.Build(url, WebSites)
+    site:WebSites = context.GetById(4)
+    print(f"{site.domain_url}, {site.is_support_android}")
+
+def GetByExpression():
+    env = EnvConfigurator()
+    url = env.MigrateConfiguration("MYSQL_DB")
+    context: DbContext = DbContextBuilder.Build(url, WebSites)
+    sites: List = context.GetObjectsWithCondition(
+        lambda: WebSites.using_php == False
+    )
+    for i in sites:
+        print(i.domain_url)
 def RunTest():
     #CreateModel()
-    GetAll()
+    #GetAll()
+    #GetById()
+    GetByExpression()
