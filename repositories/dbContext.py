@@ -28,6 +28,7 @@ class DbContext:
             session.merge(obj)
             session.commit()
             session.close()
+            return obj
         except Exception as e:
             print(e)
 

@@ -1,12 +1,10 @@
 
 from typing import List
 from dotenv import load_dotenv
-from sqlalchemy.orm import sessionmaker
 from builders.dbContextBuilder import DbContextBuilder
 from helpers.envConfigurator import EnvConfigurator
 from models.webSites import WebSites
 from repositories.dbContext import DbContext
-from repositories.webSiteRepository import WebSiteRespository
 
 load_dotenv()
 def CreateModel():
@@ -14,7 +12,7 @@ def CreateModel():
     url = env.MigrateConfiguration("MYSQL_DB")
     print(url)
     context:DbContext = DbContextBuilder.Build(url, WebSites)
-    new_site = WebSites(4, "www.discord.com.tr", True, False, True, True, True, 0)
+    new_site = WebSites(1, "www.discord.com.tr", True, False, True, True, True, 0)
     print(context.Create(new_site))
     
 def GetAll():
@@ -41,8 +39,26 @@ def GetByExpression():
     )
     for i in sites:
         print(i.domain_url)
+
+def DeleteById():
+    env = EnvConfigurator()
+    url = env.MigrateConfiguration("MYSQL_DB")
+    context: DbContext = DbContextBuilder.Build(url, WebSites)
+    context.Delete(4)
+
+def UpdateObj():
+    env = EnvConfigurator()
+    url = env.MigrateConfiguration("MYSQL_DB")
+    print(url)
+    context:DbContext = DbContextBuilder.Build(url, WebSites)
+    new_site = WebSites(1, "www.discord.com.tr", True, False, True, True, True, 0)
+    new_site.page_rank = 1000
+    print(context.Update(new_site))
+    
 def RunTest():
     #CreateModel()
     #GetAll()
     #GetById()
-    GetByExpression()
+    #GetByExpression()
+    #DeleteById()
+    UpdateObj()
