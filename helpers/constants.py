@@ -9,3 +9,7 @@ class TableNames(Enum):
     PageLinks = "PageLinks"
     Pages = "Pages"
     WebSites = "WebSites"
+
+class AppTypes(Enum):
+    BotApplication = 0
+    RestApplication = 1
