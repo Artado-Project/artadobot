@@ -10,6 +10,7 @@ class TableNames(Enum):
     Pages = "Pages"
     WebSites = "WebSites"
 
+
 class AppTypes(Enum):
     BotApplication = 0
     RestApplication = 1

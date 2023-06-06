@@ -72,5 +72,7 @@ else:
     """
 
 from test.testDB import RunTest
+from test.testRobotsScanner import run_test
 
-RunTest()
+# RunTest()
+run_test()
