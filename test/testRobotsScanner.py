@@ -1,7 +1,9 @@
+from helpers.LoggerHelper import LoggerHelper
 from services.robotsScannerService import RobotsReaderService
 
 
 def run_test():
-    serivce = RobotsReaderService(None)
-    serivce.InjectRobotPath("https://www.youtube.com/tr")
-    serivce.ExecuteOperation()
+    service = RobotsReaderService(LoggerHelper())
+    service.InjectRobotPath('https://github.com')
+    service.ExecuteOperation()
+    variable = service.ReturnObject()

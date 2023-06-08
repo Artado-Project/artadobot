@@ -74,5 +74,8 @@ else:
 from test.testDB import RunTest
 from test.testRobotsScanner import run_test
 
+# from test.loggerTest import run_test
+
 # RunTest()
 run_test()
+# run_test()
