@@ -1,5 +1,6 @@
 from helpers.constants import AppTypes
 
+
 class AppBuilder:
     def Build(self, types: AppTypes):
         match types:
@@ -9,9 +10,9 @@ class AppBuilder:
             case AppTypes.RestApplication:
                 self.__build_rest_api()
                 pass
-    
-    def __build_rest_api():
+
+    def __build_rest_api(self):
         pass
-    
-    def __build_bot():
+
+    def __build_bot(self):
         pass
