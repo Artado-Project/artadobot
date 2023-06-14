@@ -9,4 +9,4 @@ def run_test():
     service = CrawlService(
         logger=logger,
         robotsService=RobotsReaderService(logger=logger, robotsHelper=RobotFileParser()))
-    service.ExecuteCrawl("https://www.youtube.com")
+    service.ExecuteCrawl("https://www.github.com")

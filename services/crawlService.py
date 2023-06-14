@@ -10,6 +10,9 @@ class CrawlService(IService):
         super().__init__(logger)
         self.__base_url = None
         self.__robotsService = robotsService
+        self.__crawledPages = []
+        self.__subUrls = []
+        self.__counter = 0
 
     def ExecuteCrawl(self, site: str):
         # site aldın
@@ -23,50 +26,51 @@ class CrawlService(IService):
             self.__base_url = site
             self.__robotsService.ScanRobotsFile(site)
             self._logger.Info("Crawler initializing proccess")
-            self.__CrawlPage(self.__base_url)
+            self.__subUrls.append(self.__base_url + '/')
+            self.__Crawl(self.__subUrls[0])
         except Exception as e:
             self._logger.Error(f"Message: {e}")
         pass
 
-    def __CrawlPage(self, sub_url: str):
-        # ilk önce bu site gezilebiliyor mu ? (robots.txt üzerinden bunu anla) gezilebiliyor ise page var mı yok mu
-        # onu kontrol et. Yok ise yeni bir kayıt aç var ise var olan kayıt ile karşılaştırmasını yap. gezilebiliyor
-        # ise __GetImages fonksiyonunu çalıştırıp bütün imageleri al ve duruma göre verileri işle __GetPageContents
-        # fonksiyonunu çalıştır ve gerekli olan argümanları al ve veritabanına işle __GetLinksFonksiyonunu çalıştır.
-        # Alınan veriler başka bir siteye yönlendirme yapıyorsa Veri tabanına bunları kaydet (pageLinks) pagelinks
-        # alınan linkte eğer base'url'in bir yönlendirmesiyse yani aynı web sitesinin başka bir uzantısına gönderiyorsa
-        # burada __CrawlPageFonksiyonunu tekrar çalıştır.
-        # kendine bu işlemleri yapa yapa devam etsin.
+    def __Crawl(self, sub_url: str):
+        if not self.__crawledPages.__contains__(sub_url):
+            self.__CrawlCurrentPage(sub_url)
+            self.__crawledPages.append(sub_url)
+            self.__counter += 1
+            if self.__CheckCanContinueToCrawl(self.__counter, self.__subUrls):
+                self.__Crawl(self.__subUrls[self.__counter])
+            else:
+                self._logger.Warning("CRAWL COMPLETED")
+
+    def __CheckCanContinueToCrawl(self, counter: int, array: list) -> bool:
+        return self.__counter < len(array)
+
+    def __CrawlCurrentPage(self, sub_url):
         if self.__robotsService.CanFetchUrl("*", sub_url):
-            self._logger.Info(f"Current Page => {sub_url}")
             # self.__GetImages(sub_url)
             # self.__GetPageContents(sub_url)
+            self._logger.Info(f"Current Page {sub_url}")
             links = PageHelper.GetLinkInsidePage(sub_url)
             for link in links:
-                condition_str = PageHelper.ConfigureUrl(self.__base_url, link['href'])
-                if condition_str is "":
-                    print("Different web site")
-                else:
-                    print(condition_str)
-                    if condition_str != self.__base_url + '/' and condition_str != sub_url:
-                        self.__CrawlPage(condition_str)
-                #if condition_str is "":
-                #    self._logger.Info("Different web site")
-                #else:
-                #    if sub_url != self.__base_url + '/' and condition_str != sub_url:
-                #        self.__CrawlPage(condition_str)
+                if link.get('href') is not None:
+                    configured_url = PageHelper.ConfigureUrl(self.__base_url, link.get('href'))
+                    if configured_url is "":
+                        pass
+                    else:
+                        if not self.__subUrls.__contains__(configured_url):
+                            # self._logger.Info(f"Sub url {configured_url}")
+                            self.__subUrls.append(configured_url)
         else:
             self._logger.Warning(f"Crawler has not permission to crawl site url => {sub_url}")
-        pass
 
     def __GetImages(self, sub_url):
-        self._logger.Info("Getting Images")
+        self._logger.Info(f"Getting Images from {sub_url}")
         images = PageHelper.GetImageLinksPage(sub_url)
         print(images)
         pass
 
     def __GetPageContents(self, sub_url):
-        self._logger.Info("Getting contents")
+        self._logger.Info(f"Getting contents from {sub_url}")
         contents = PageHelper.GetContentType(sub_url)
         print(contents)
         pass
