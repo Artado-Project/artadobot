@@ -57,27 +57,31 @@ class CrawlService(IService):
 
     def __CrawlCurrentPage(self, sub_url):
         if self.__robotsService.CanFetchUrl("*", sub_url):
-            # self.__GetImages(sub_url)
-            # self.__GetPageContents(sub_url)
-            self._logger.Info(f"Current Page {sub_url}")
-            response = RequestHelper.GetResponseContent(sub_url)
-            links = PageHelper.GetLinkInsidePage(response, self._logger)
-            for link in links:
-                self.__LinkHandler(link)
-
+            response = RequestHelper.GetResponseContent(sub_url, self._logger)
+            if response is not None:
+                # self.__GetImages(response, sub_url)
+                self.__GetPageContents(response, sub_url)
+                self._logger.Info(f"Current Page {sub_url}")
+                links = PageHelper.GetLinkInsidePage(response)
+                for link in links:
+                    self.__LinkHandler(link)
         else:
             self._logger.Warning(f"Crawler has not permission to crawl this url => {sub_url}")
 
-    def __GetImages(self, sub_url):
+    def __GetImages(self, response, sub_url: str):
         self._logger.Info(f"Getting Images from {sub_url}")
-        images = PageHelper.GetImageLinksPage(sub_url)
-        print(images)
+        images = PageHelper.GetImageLinksPage(response)
+        for image in images:
+            if 'alt' in image and image['alt'] is not None:
+                self._logger.Info(f"Image alt: {image['alt']}")
+            if 'src' in image and image['src'] is not None:
+                self._logger.Info(f"Image src: {image['src']}")
         pass
 
-    def __GetPageContents(self, sub_url):
+    def __GetPageContents(self, response, sub_url):
         self._logger.Info(f"Getting contents from {sub_url}")
-        contents = PageHelper.GetContentType(sub_url)
-        print(contents)
+        contents = PageHelper.FindPageContents(response)
+
         pass
 
     def __LinkHandler(self, link):

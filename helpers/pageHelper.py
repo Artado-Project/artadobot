@@ -9,31 +9,24 @@ from helpers.LoggerHelper import LoggerHelper
 class PageHelper:
 
     @staticmethod
-    def GetLinkInsidePage(response: Response, logger: LoggerHelper) -> List:
-        if response.status_code == 200:
-            soup = BeautifulSoup(response.content, features="html.parser")
-            links = soup.findAll("a")
-            return links
-        else:
-            logger.Error(f" Request warning, Status Code = {response.status_code}, URL: {response.url}")
-            return []
-        pass
+    def GetLinkInsidePage(response: Response) -> List:
+        soup = BeautifulSoup(response.content, features="html.parser")
+        links = soup.findAll("a")
+        return links
 
     @staticmethod
-    def GetImageLinksPage(complete_page_url: str) -> List:
-        pass
+    def GetImageLinksPage(response: Response) -> List:
+        soup = BeautifulSoup(response.content, features="html.parser")
+        images = soup.findAll("img")
+        return images
 
     @staticmethod
-    def GetFavIcon(complete_page_url: str) -> str:
-        pass
-
-    @staticmethod
-    def FindKeywords(complete_page_url: str) -> List:
-        pass
-
-    @staticmethod
-    def GetContentType(page_uri: str) -> bool:
-        pass
+    def FindPageContents(response: Response):
+        soup = BeautifulSoup(response.content, features="html.parser")
+        title = soup.title.string
+        description = soup.find('meta', attrs={'name': 'description'})['content']
+        keywords = soup.find('meta', attrs={'name': 'keywords'})
+        print(keywords)
 
     @staticmethod
     def ConfigureUrl(base_url: str, a_link_url: str) -> str:
@@ -43,6 +36,3 @@ class PageHelper:
             return a_link_url
         else:
             return ""
-
-
-
