@@ -1,8 +1,8 @@
 from typing import List
 from bs4 import BeautifulSoup
-import requests
 from requests import Response
-
+from collections import Counter
+import re
 from helpers.LoggerHelper import LoggerHelper
 
 
@@ -21,12 +21,23 @@ class PageHelper:
         return images
 
     @staticmethod
-    def FindPageContents(response: Response):
+    def FindPageContents(response: Response) -> {}:
+        content_tuple = {}
+        total_keywords = []
         soup = BeautifulSoup(response.content, features="html.parser")
         title = soup.title.string
         description = soup.find('meta', attrs={'name': 'description'})['content']
         keywords = soup.find('meta', attrs={'name': 'keywords'})
-        print(keywords)
+        words = re.sub(r'\W+', ' ', soup.get_text().lower()).split()
+        word_counts = Counter(words)
+        common_keywords = word_counts.most_common(10)
+        total_keywords.append(keywords['content'])
+        for key, value in common_keywords:
+            total_keywords.append(key)
+        content_tuple['title'] = title
+        content_tuple['description'] = description
+        content_tuple['keywords'] = total_keywords
+        return total_keywords
 
     @staticmethod
     def ConfigureUrl(base_url: str, a_link_url: str) -> str:
