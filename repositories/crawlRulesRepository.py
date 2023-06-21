@@ -5,7 +5,7 @@ from .dbContext import DbContext
 from .StorageBase import StorageBase
 
 
-class CrawRulesRepository(StorageBase):
+class CrawlRulesRepository(StorageBase):
     def __init__(self, context: DbContext) -> None:
         super().__init__(context)
 

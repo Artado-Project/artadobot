@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 from requests import Response
 from collections import Counter
 import re
-from helpers.LoggerHelper import LoggerHelper
 
 
 class PageHelper:
@@ -37,7 +36,7 @@ class PageHelper:
         content_tuple['title'] = title
         content_tuple['description'] = description
         content_tuple['keywords'] = total_keywords
-        return total_keywords
+        return content_tuple
 
     @staticmethod
     def ConfigureUrl(base_url: str, a_link_url: str) -> str:

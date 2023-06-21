@@ -4,7 +4,7 @@ from .StorageBase import StorageBase
 from repositories.dbContext import DbContext
 
 
-class WebSiteRespository(StorageBase):
+class WebSiteRepository(StorageBase):
 
     def __init__(self, context: DbContext):
         super().__init__(context)
