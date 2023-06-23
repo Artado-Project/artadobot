@@ -1,8 +1,6 @@
 from core.service import IService
 from helpers.LoggerHelper import LoggerHelper
 from helpers.requestHelper import RequestHelper
-from models.webSites import WebSites
-from .repositoryManager import RepositoryManager
 from .robotsScannerService import RobotsReaderService
 from helpers.pageHelper import PageHelper
 
@@ -10,23 +8,25 @@ from helpers.pageHelper import PageHelper
 class CrawlService(IService):
 
     def __init__(self, logger: LoggerHelper,
-                 robotsService: RobotsReaderService,
-                 repositoryManager: RepositoryManager) -> None:
+                 robotsService: RobotsReaderService) -> None:
         super().__init__(logger)
         self.__counter = 0
-        self.__subUrls = []
-        self.__differentPageUrls = []
+        self.__subUrls = []  # sub domain urls
+        self.__differentPageUrls = []  # links
         self.__crawledPages = []
         self.__base_url = None
+        self.__images = {}
+        self.__pageContents = {}
         self.__robotsService = robotsService
-        self.__repositoryManager = repositoryManager
         self.SetToDefault()
 
     def __CheckCanContinueToCrawl(self, counter: int, array: list) -> bool:
-        return self.__counter < len(array)
+        return counter < len(array)
 
     def SetToDefault(self):
         self.__crawledPages.clear()
+        self.__differentPageUrls.clear()
+        self.__base_url = ""
         self.__subUrls.clear()
         self.__counter = 0
 
@@ -42,7 +42,7 @@ class CrawlService(IService):
                     self.__counter += 1
                 else:
                     self._logger.Warning("CRAWL COMPLETED")
-                    self.SetToDefault()
+                    print(self.__images)
                     break
         except Exception as e:
             self._logger.Error(f"Message: {e}")
@@ -62,28 +62,28 @@ class CrawlService(IService):
                 self._logger.Info(f"Current Page {sub_url}")
                 links = PageHelper.GetLinkInsidePage(response)
                 for link in links:
-                    self.__LinkHandler(link)
+                    self.__HandleLinks(link)
         else:
             self._logger.Warning(f"Crawler has not permission to crawl this url => {sub_url}")
 
     def __GetImages(self, response, sub_url: str):
         self._logger.Info(f"Getting Images from {sub_url}")
         images = PageHelper.GetImageLinksPage(response)
+        self.__images[sub_url] = []
         for image in images:
-            if 'alt' in image and image['alt'] is not None:
-                self._logger.Info(f"Image alt: {image['alt']}")
-            if 'src' in image and image['src'] is not None:
-                self._logger.Info(f"Image src: {image['src']}")
-        pass
+            obj = {}
+            if image.get('alt') is not None:
+                obj['alt'] = image.get('alt')
+            if image.get('src') is not None:
+                obj['src'] = image.get('src')
+            self.__images[sub_url].append(obj)
 
     def __GetPageContents(self, response, sub_url):
         self._logger.Info(f"Getting contents from {sub_url}")
         contents = PageHelper.FindPageContents(response)
-        self._logger.Error(f"Tuple : {contents}")
+        self.__pageContents[sub_url] = contents
 
-        pass
-
-    def __LinkHandler(self, link):
+    def __HandleLinks(self, link):
         href_link: str = link.get('href')
         if href_link is not None:
             configured_url = PageHelper.ConfigureUrl(self.__base_url, href_link)
@@ -93,3 +93,15 @@ class CrawlService(IService):
             else:
                 if configured_url not in self.__subUrls:
                     self.__subUrls.append(configured_url)
+
+    def GetLinks(self):
+        return self.__differentPageUrls
+
+    def GetPages(self):
+        return self.__crawledPages
+
+    def GetImages(self):
+        return self.__images
+
+    def GetContents(self):
+        return self.__pageContents
