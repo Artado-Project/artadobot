@@ -69,7 +69,7 @@ class DbContext:
         except Exception as e:
             print(e)
 
-    def GetObjectsWithJoin(self, model: Model):
+    def GetObjectsWithJoin(self, model: any):
         try:
             session = self.__Session()
             objects = session.query(self.__model_class).join(model).all()

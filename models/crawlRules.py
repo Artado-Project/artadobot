@@ -4,7 +4,7 @@ from helpers.constants import TableNames
 
 
 class CrawlRules(Model):
-    __table__name = TableNames.CrawRules
+    __tablename__ = TableNames.CrawRules.value
 
     id = Column("id", Integer, primary_key=True, nullable=False)
     domain_id = Column("domain_id", Integer, ForeignKey(f"{TableNames.WebSites.value}.id"), nullable=False)
