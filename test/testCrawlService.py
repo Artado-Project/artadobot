@@ -50,4 +50,6 @@ def run_test():
         robotsService=RobotsReaderService(logger=logger, robotsHelper=RobotFileParser())
     )
     service.ExecuteCrawl("https://www.urhoba.net")
-    print(service.GetLinks())
+    dict_value = service.GetResult().Pages
+    for i in dict_value:
+        print(i)
