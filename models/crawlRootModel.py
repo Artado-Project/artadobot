@@ -1,17 +1,23 @@
+from datetime import datetime, date
+
+
 class Page:
     CanCrawl: bool
     Links: []
     Images: []
     Contents: {}
+    Date: date
 
     def __init__(self):
         self.CanCrawl = False
         self.Images = []
         self.Links = []
         self.Contents = {}
+        self.Date = datetime.now().date()
 
 
 class SiteInfo:
+    base_url: str
     using_js: bool
     using_php: bool
     using_dotnet: bool

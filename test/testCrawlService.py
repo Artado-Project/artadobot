@@ -49,7 +49,5 @@ def run_test():
         logger=logger,
         robotsService=RobotsReaderService(logger=logger, robotsHelper=RobotFileParser())
     )
-    service.ExecuteCrawl("https://www.urhoba.net")
-    dict_value = service.GetResult().Pages
-    for i in dict_value:
-        print(i)
+    service.ExecuteCrawl("https://tr.wikipedia.org")
+    dict_value = service.GetResult()

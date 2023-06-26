@@ -13,12 +13,12 @@ class CrawlService(IService):
     def __init__(self, logger: LoggerHelper,
                  robotsService: RobotsReaderService) -> None:
         super().__init__(logger)
-        self.__subUrls = None
-        self.__root: Root | None = None
-        self.__counter = None
-        self.__crawledPages = None
-        self.__differentPageUrls = None
-        self.__base_url = None
+        self.__subUrls = []
+        self.__root: Root = Root()
+        self.__counter = 0
+        self.__crawledPages = []
+        self.__differentPageUrls = {}
+        self.__base_url = ""
         self.__robotsService = robotsService
         self.SetToDefault()
 
@@ -94,7 +94,6 @@ class CrawlService(IService):
                 obj['alt'] = image.get('alt')
             if image.get('src') is not None:
                 obj['src'] = image.get('src')
-
             self.__root.Pages[sub_url].Images.append(obj)
 
     def __GetPageContents(self, response, sub_url):
@@ -120,6 +119,7 @@ class CrawlService(IService):
         # using php
         # using .net
         self.__root.SiteInfo = SiteInfo()
+        self.__root.SiteInfo.base_url = self.__base_url
         self.__root.SiteInfo.using_php = False
         self.__root.SiteInfo.using_js = False
         self.__root.SiteInfo.using_dotnet = True

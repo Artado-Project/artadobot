@@ -24,18 +24,20 @@ class PageHelper:
         content_tuple = {}
         total_keywords = []
         soup = BeautifulSoup(response.content, features="html.parser")
-        title = soup.title.string
-        description = soup.find('meta', attrs={'name': 'description'})['content']
-        keywords = soup.find('meta', attrs={'name': 'keywords'})
+        title = soup.find('title')
+        description = soup.find('meta', attrs={'name': 'description'})
+        keyword = soup.find('meta', attrs={'name': 'keywords'})
         words = re.sub(r'\W+', ' ', soup.get_text().lower()).split()
         word_counts = Counter(words)
         common_keywords = word_counts.most_common(10)
-        total_keywords.append(keywords['content'])
+        if keyword is not None:
+            total_keywords.append(keyword)
         for key, value in common_keywords:
             total_keywords.append(key)
-        content_tuple['title'] = title
-        content_tuple['description'] = description
-        content_tuple['keywords'] = total_keywords
+
+        content_tuple['title'] = title.string if title is not None else ""
+        content_tuple['description'] = description if title is not None else ""
+        content_tuple['keywords'] = total_keywords if total_keywords is not None and len(total_keywords) > 0 else []
         return content_tuple
 
     @staticmethod

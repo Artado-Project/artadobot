@@ -1,3 +1,4 @@
+import array
 from typing import List
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine, inspect
@@ -81,3 +82,12 @@ class DbContext:
     def __CreateAllTables(self):
         if inspect(self.__engine).has_table(self.__model_class.__tablename__) is False:
             self.__model_class.__table__.create(self.__engine)
+
+    def BulkSave(self, objects):
+        try:
+            session = self.__Session()
+            session.bulk_save_objects(objects, preserve_order=True)
+            session.commit()
+            session.close()
+        except Exception as e:
+            print(e)

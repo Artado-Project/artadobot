@@ -1,3 +1,5 @@
+from typing import Any
+
 from sqlalchemy import Column, Integer, VARCHAR, Boolean, Date, ForeignKey
 
 from core.model import Model
