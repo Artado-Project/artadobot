@@ -44,7 +44,7 @@ ArtadoBot is the web crawling component of Artado Search, an open-source search 
 
    ```bash
    cd artadobot
-   python crawler.py
+   python main.py
    ```
 
 ## Contributing
