@@ -37,7 +37,7 @@ ArtadoBot is the web crawling component of Artado Search, an open-source search 
 1. **Clone the Development Branch:** Open a terminal and clone the ArtadoBot repository's Development branch:
 
    ```bash
-   git clone -b development https://github.com/Artado-Project/artadobot.git
+   git clone -b Development https://github.com/Artado-Project/artadobot.git
    ```
 
 2. **Run the Crawler:** In the terminal, start the crawler:
