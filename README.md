@@ -1,95 +1,78 @@
-# ArtadoBot
+# ArtadoBot - Artado Search Crawler
 
-Artado Search arama motoru için tasarlanmış açık kaynak kodlu crawler botu.
+![Artado Search Logo](https://www.artadosearch.com/images/android-chrome-192x192.png)
 
-README'de genel olarak projeyi açıkladım. Gerekirse ayrı dosyalarda daha detaylı açıklamalar yapabilirim.
-Örneğin TODO List vs. ama onları herkesin yorumu ile yapmanın daha iyi olacağını düşündüm.
+ArtadoBot is the web crawling component of Artado Search, an open-source search engine project. It is designed to fetch and index web pages for the Artado Search engine. This README provides an overview of ArtadoBot's Development branch, how to set up and run it in both Windows and Linux environments, and how to contribute to its development.
 
-## Temel Yapılacaklar
+## Features
 
-Botun toplaması gereken temel bilgiler:
-- Robots.txt okuyabilmeli ve ona uygun olarak sayfaları gezmeli
-- Title, description, keywords gibi meta tagleri
-- Sitenin faviconu
-- Sayfadaki tüm linkler (a etiketleri)
-- Sayfaki resimlerin linkleri (img etiketleri)
-- Sayfanın mobile uyumluluğu (puanlamayı etkileyecek)
-- Sayfanın kullandığı teknolojiler (JavaScript kullanıp kullanmaması vs.)
-- Sayfa içeriğinin dili (opsiyonel, olmasa da olur)
+- **Web Crawling:** ArtadoBot is capable of crawling web pages, fetching their content, and processing metadata.
+- **Robots.txt Compliance:** The crawler adheres to the rules set in a website's `robots.txt` file to respect website permissions.
+- **Politeness:** ArtadoBot maintains a delay between requests to avoid overloading websites and being respectful to their servers.
+- **Configurability:** The crawler can be configured with user-defined settings such as crawl depth and maximum number of pages to crawl.
 
-Yani temelde bir crawler hangi verileri alıyorsa ArtadoBot'da onları alacak.
-Bunların yanında sayfayı [PageRank](https://tr.wikipedia.org/wiki/PageRank)
-algoritmasına göre puanlandıracak. Sıfırdan bir PageRank algoritması
-yazmana gerek yok. Bir kütüphaneyi kullanabilirsin.
+## Prerequisites
 
-### Botun Kullanımı
+- Python 3.7 or higher
 
-Bot konsol/terminal üzerinden çalıştırılabilir olmalı. Yani 
-konsol uygulaması olacak. Botun özellikle Linux ve Windows'da çalıştırılabilir 
-olması gerek.
+## Setup and Running on Windows
 
-Yaklaşık 3 yıldır Artado Search üzerinden insanlar sonuçlara eklenebilmesi için
-[bu sayfadan](https://www.artadosearch.com/AddResult) site ekleyebiliyorlar. Buradan
-eklenen linkler onay listesi olarak bir database'e kaydediliyor. Bot hem bu listeden
-siteleri sırayla ziyaret edecek, hem zaten sonuçlara eklenmiş siteleri yeniden ziyaret edecek,
-hem de mesela `artadobot crawl (url)` diyince o URL'i ziyaret edip o siteyi gezmeye başlayacak.
-Bu yüzden farklı modlar olması lazım. Mesela `artadobot waitlist` diyince insanlar tarafından eklenen
-siteleri gezmeye başlar. Ayrıca bir sayfada bulduğu yeni linkleri de waitlist'e ekleyebilir veya 
-direkt onları da ziyaret eder. Bu ikisini ayrı seçenekler olarak da sunabiliriz. Tabi bu komutlar
-sadece birer örnek.
+1. **Install Ubuntu WSL:** Follow the [official guide](https://ubuntu.com/wsl/install) to install Ubuntu WSL on your Windows machine.
 
-## Sonuçların kaydedilmesi
+2. **Clone the Development Branch:** Open the Ubuntu WSL terminal and clone the ArtadoBot repository's Development branch:
 
-Web sonuçları ve Görsel sonuçları farklı tablolara kaydedilmekte. Veritabanı olarak MSSQL
-kullanıyoruz. 
+   ```bash
+   git clone -b Development https://github.com/Artado-Project/artadobot.git
+   ```
 
-Web sonuçlarının kaydedildiği tablo:
-![image](https://user-images.githubusercontent.com/47920304/236550180-05255164-b3fa-424e-9c09-ee83b6c318c1.png)
-ID: otomatik atanan ID
+3. **Run the Crawler:** In the Ubuntu WSL terminal, start the crawler:
 
-Content1: Site Description
+   ```bash
+   cd artadobot
+   python main.py
+   ```
 
-Date: Botun siteyi ziyaret ettiği tarih (DD/MM/YY olarak kaydedersin sen)
+## Setup and Running on Linux
 
-Lang: `<html lang="tr"/>` etiketi ile sitenin dilini buluyordum, sen farklı şekilde yapabilirsin.
+1. **Clone the Development Branch:** Open a terminal and clone the ArtadoBot repository's Development branch:
 
+   ```bash
+   git clone -b development https://github.com/Artado-Project/artadobot.git
+   ```
 
-Görsel sonuçlarının kaydedildiği tablo:
+2. **Run the Crawler:** In the terminal, start the crawler:
 
-![image](https://user-images.githubusercontent.com/47920304/236553241-1514379e-bab4-4769-baff-86c237d23f4a.png)
+   ```bash
+   cd artadobot
+   python crawler.py
+   ```
 
+## Contributing
 
-Waitlist(Kullanıcılar tarafından eklenen linkler vs):
+ArtadoBot's Development branch is where active development takes place. Contributions are welcome and encouraged. If you'd like to contribute, follow these steps:
 
-![image](https://user-images.githubusercontent.com/47920304/236553461-89a04dce-f158-4e4c-8c3b-22415ca5bc87.png)
+1. Fork the repository on GitHub.
 
+2. Clone your forked repository and create a new branch for your feature or bug fix:
 
-Tablolarda değişikliklere gidebiliriz. Bunlar senin çalışmanda örnek olması için.
+   ```bash
+   git clone https://github.com/YourUsername/artadobot.git
+   cd artadobot
+   git checkout -b feature/your-feature-name
+   ```
 
-## Kaynaklar
+3. Make your changes, commit them, and push to your forked repository.
 
-Crawler konusunda yardımcı olabilecek projeler/kaynaklar:
-### C#
-- Crawler Örnekleri
-  + https://github.com/TurnerSoftware/InfinityCrawler
-  + https://github.com/dotnetcore/DotnetSpider
-  + https://github.com/microfisher/Simple-Web-Crawler
-  + https://github.com/sjdirect/abot
-  + https://github.com/TheM4hd1/PenCrawLer
-  + https://github.com/Misterhex/WebCrawler
-  + https://github.com/mehmetozkaya/DotnetCrawler
-  + https://github.com/meziantou/WebCrawler
-  
- - PageRank
-   + https://github.com/jeffersonhwang/pagerank
-   + https://github.com/devFarzad/PageRanking
-   + https://github.com/ptedlapu/PageRank
-   + https://github.com/bitlazy/Godaddy-Expired-Domains-Analyser (Farklı bir şey ama yararlı olabilir gibi)
-   + https://github.com/bnji/PageRanker
+4. Create a pull request on the original repository's Development branch, describing your changes and improvements.
 
-- Robots.txt
-  + https://github.com/TurnerSoftware/RobotsExclusionTools
-  + https://github.com/stormid/robotify-netcore
-  + https://github.com/karl-sjogren/robots-txt-middleware
-  
-Daha fazla kaynak eklemesi yapacağım zamanla. Şimdilik bunlar yeterli gibi.  
+## License
+
+ArtadoBot is released under the GNU General Public License v3.0 (GPL-3.0). See the [LICENSE](LICENSE) file for more details.
+
+## Contact
+
+If you have any questions or need assistance, feel free to reach out to us at [support@artadosearch.com](mailto:support@artadosearch.com).
+
+---
+
+Thank you for your interest in ArtadoBot's Development branch! Your contributions and feedback are invaluable to the ongoing development of our web crawling component for the Artado Search project. Happy crawling and coding!
